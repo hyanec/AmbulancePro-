@@ -1,12 +1,19 @@
 <?php
 // Ne pas inclure config.php ici pour éviter les redirections de session
+
 session_start();
 
-// Configuration minimale
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'ambulancepro');
+// Use Railway environment variables
+$db_url = parse_url($_ENV['DATABASE_URL'] ?? 'mysql://root@localhost/ambulancepro');
+
+define('DB_HOST', $db_url['host'] ?? 'localhost');
+define('DB_USER', $db_url['user'] ?? 'root');
+define('DB_PASS', $db_url['pass'] ?? '');
+define('DB_NAME', ltrim($db_url['path'] ?? '/ambulancepro', '/'));
+
+
+
+
 
 $error = '';
 $success = '';
